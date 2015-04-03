@@ -1,0 +1,278 @@
+meta {
+    title: "Osmosnimki mapcss stylesheet";   /* title shown in the menu */
+}
+
+
+
+
+/*
+  Deja Vu MapCSS styles
+  Osmosnimki maps style
+*/
+
+/* коментарии отделяются так и могут встречаться везде, где можно поставить пробел */
+
+
+
+canvas {opacity:0; -x-mapnik-true-layers: false}
+/*canvas {
+  fill-color: #F1EEE8;
+  -x-mapnik-dem-hack: true;
+}*/
+
+canvas {
+  background-color: #fcf8e4; /* for josm: ground color*/
+  default-points: false;
+  default-lines: false;
+}
+
+way::* {
+    linejoin: miter;
+    linecap: none;
+}
+
+area {
+    fill-opacity: 0.0001;
+}
+
+way:closed, relation[type=multipolygon] {
+    fill-opacity: 1.0;
+}
+
+*::* {
+    text-halo-color: white;
+    text-anchor-horizontal: center;
+    text-anchor-vertical: center;
+}
+
+
+
+/*
+селектор, что рисовать.
+
+canvas - фон, считается одним большим полигоном, намного больше карты.
+    К нему можно применять свойства заливок.
+    Для mapnik'a нельзя выбирать разные параметры фона для разных зумов, и не поддерживаются иные параметры, кроме цвета
+
+node - точка.
+way - путь. выбирает одновременно все границы полигонов и все линейные объекты
+line - линейные объекты (обычно - незамкнутые пути, обычно к ним неприменима заливка)
+area - площадные объекты (обычно - замкнутые пути, применимы как заливки, так и линии контуров)
+
+ */
+/*
+квадратные скобки после объекта - селектор по тегам.
+основные варианты:
+тег=значение
+тег!=значение - выбрать все, кроме тег=значение
+тег - тег присутствует, значение не важно
+
+  */
+       {fill-position:background; fill-color:#f3eceb; z-index:1}
+/*
+z-index - порядковый номер слоя, в котором будет лежать объект.
+чем меньше, тем ниже будет находиться объект (другие будут перекрывать), 
+относительно z-index можно расставлять приоритеты в отрисовке, то что рисуется раньше, 
+вытеснит, то что рисуется позже. 
+
+магия: на развязках обводки будут учитывать слои эстакад, номер слоя можно посмотреть в семантике - ключ layer.
+Если нужно принудительно положить линию поверх всех дорог:
+-x-mapnik-layer: top;
+(к примеру, использовалось для рисования разделительных полос на primary )
+
+Если (вдруг) понадобится принудительно положить линию под все дороги (фон):
+-x-mapnik-layer: bottom;
+
+ */
+ 
+/*node|z14-[place=locality]{text:name; font-size:11;
+font-family: "DejaVu Sans Book"; text-color:#101010; text-halo-radius: 1;
+text-halo-color: #ffffff; text-allow-overlap: false; -x-mapnik-min-distance:0; text-placement:any;
+max-width:30}  
+*/
+
+/* fill-color: - html-цвет заливки */
+
+/*
+после селектора типа объекта можно опционально ограничить зумы:
+|zA-B, A < B
+если нам не нужна какая-то из границ ("от минимального зума до такого-то"
+либо "от такого-то до бесконечности") - число A или B можно опустить.
+*/
+
+
+/*
+text-halo-radius - ширина обводки текста (более читаемый получается)
+text-halo-color - по идее цвет обводки
+max-width - максимальная ширина текста (если не поместится, то слова будут переноситься)
+*/
+
+
+/*
+свойства с префиксом background- в основном относятся к заливкам, без префиксов - к линиям.
+width - ширина линии
+color - цвет линии
+opacity - прозрачность (1 - видимый полностью, 0 - совсем невидимый)
+casing-width - ширина обводки
+casing-color - цвет обводки
+casing-opacity - прозрачность обводки
+dashes: 16; - прерывистая
+  */
+
+/* Фон подстанций */
+area|z9-[power=station]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #D8D6D7;
+ z-index:17}
+
+ area|z2-[boundary=administrative][admin_level=6]
+ {text:name; text-offset:15; font-size:12; font-family: "DejaVu Sans ExtraLight"; text-halo-radius:3; text-color:red;
+ text-halo-color:#ffffff;-x-mapnik-min-distance:0; z-index:15}
+ 
+
+ way|z2-[boundary=administrative][admin_level=6]
+ {width: 2.5; color: red; opacity:.3;casing-color:grey;casing-width:1;
+  z-index:16}
+
+/* Заполнение краской */
+/*===========================================================*/
+
+
+area|z2-12[boundary=administrative][admin_level=6][name=Владивостокский городской округ]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #56bac3;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Артёмовский городской округ]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #56c396;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=ЗАТО Большой Камень]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #5ac356;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Надеждинский район]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #9ec356;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=ЗАТО Фокино]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #e9af66;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Партизанский городской округ]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #e96694;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Лазовский район]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #cb66e9;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Ольгинский район]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #9866e9;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Кавалеровский район]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #6666e9;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Находкинский городской округ]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #669fe9;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Дальнегорский городской округ]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #e97866;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Тернейский район]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #2b83f4;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Пожарский район]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #2bdbf4;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Дальнереченский городской округ]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #2bf4c6;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Дальнереченский район]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #2bf47a;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Кировский район]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #2cf42b;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Спасский район]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #72f42b;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Яковлевский район]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #a7f42b;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Арсеньевский городской округ]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #d7f42b;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Михайловский район]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #f4892b;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Уссурийский городской округ]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #fa79c9;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Хасанский район]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #e9e166;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Шкотовский район]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #dc79fa;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Октябрьский район]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #9f79fa;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Пограничный район]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #e966cf;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Партизанский район]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #f4d42b;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Анучинский район]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #7979fa;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Хорольский район]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #79aafa;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Черниговский район]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #4f8794;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Ханкайский район]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #4f948b;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Спасский район]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #4f944f;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=городской округ Спасск-Дальний]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #84944f;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Чугуевский район]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #94864f;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Красноармейский район]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #944f79;
+z-index:17}
+
+area|z2-12[boundary=administrative][admin_level=6][name=Лесозаводский городской округ]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #724f94;
+z-index:17}

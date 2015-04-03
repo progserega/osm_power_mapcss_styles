@@ -1,0 +1,13 @@
+#!/bin/bash
+mapcss_name="admin_levels.mapcss"
+mv "${mapcss_name}" "${mapcss_name}.bak"
+cat admin_levels.mapcss_part1 > "${mapcss_name}"
+cat admin_levels_names|while read text
+do
+		name="`echo $text|awk '{print $1}' FS=','`"
+		color="`echo $text|awk '{print $2}' FS=','`"
+		echo "
+area|z2-12[boundary=administrative][admin_level=6][name="${name}"]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #${color};
+z-index:17}" >> "${mapcss_name}"
+done

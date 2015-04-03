@@ -1,0 +1,33 @@
+#!/bin/bash
+
+#python komap.py -s styles/mapink.mapcss -c komap.conf > osm.xml
+#python komap.py -s my.mapcss -c komap.conf > osm.xml
+
+#configs="drsk_line_0_4 \
+#drsk_line_10 \
+#drsk_line_220_110 \
+#drsk_line_35 \
+#drsk_line_6 \
+#drsk_line_error \
+#drsk_station \
+#drsk_tower \
+#drsk_tp"
+
+config_dir="/opt/osm/mapcss/drsk_mapcss/"
+config="${1}"
+tmp=`mktemp /tmp/XXXXX`
+
+cd /opt/osm/mapcss/kothic_converter_src/kothic/src
+echo "start: python komap.py -s ${config_dir}/${config} -c komap.conf > ${tmp}"
+python komap.py -s ${config_dir}/${config} -c komap.conf > "${tmp}"
+
+if [ 0 -eq $? ]
+then
+	echo "Нет ошибок"
+	rm "${tmp}"
+	exit 0
+else
+	echo "В конфиге ЕСТЬ ошибки!"
+	rm "${tmp}"
+	exit 1
+fi

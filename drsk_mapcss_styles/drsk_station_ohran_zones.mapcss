@@ -1,0 +1,243 @@
+meta {
+    title: "Osmosnimki mapcss stylesheet";   /* title shown in the menu */
+}
+
+
+
+
+/*
+  Deja Vu MapCSS styles
+  Osmosnimki maps style
+*/
+
+/* коментарии отделяются так и могут встречаться везде, где можно поставить пробел */
+
+
+
+canvas {opacity:0; -x-mapnik-true-layers: false}
+/*canvas {
+  fill-color: #F1EEE8;
+  -x-mapnik-dem-hack: true;
+}
+*/
+canvas {
+  background-color: #fcf8e4; /* for josm: ground color*/
+  default-points: false;
+  default-lines: false;
+}
+
+area::* {
+    linejoin: miter;
+    linecap: none;
+}
+
+area {
+    fill-opacity: 0.0001;
+}
+
+area:closed, relation[type=multipolygon] {
+    fill-opacity: 1.0;
+}
+
+*::* {
+    text-halo-color: white;
+    text-anchor-horizontal: center;
+    text-anchor-vertical: center;
+}
+
+
+
+/*
+селектор, что рисовать.
+
+canvas - фон, считается одним большим полигоном, намного больше карты.
+    К нему можно применять свойства заливок.
+    Для mapnik'a нельзя выбирать разные параметры фона для разных зумов, и не поддерживаются иные параметры, кроме цвета
+
+node - точка.
+area - путь. выбирает одновременно все границы полигонов и все линейные объекты
+line - линейные объекты (обычно - незамкнутые пути, обычно к ним неприменима заливка)
+area - площадные объекты (обычно - замкнутые пути, применимы как заливки, так и линии контуров)
+
+ */
+/*
+квадратные скобки после объекта - селектор по тегам.
+основные варианты:
+тег=значение
+тег!=значение - выбрать все, кроме тег=значение
+тег - тег присутствует, значение не важно
+
+  */
+       {fill-position:background; fill-color:#f3eceb; z-index:1}
+/*
+z-index - порядковый номер слоя, в котором будет лежать объект.
+чем меньше, тем ниже будет находиться объект (другие будут перекрывать), 
+относительно z-index можно расставлять приоритеты в отрисовке, то что рисуется раньше, 
+вытеснит, то что рисуется позже. 
+
+магия: на развязках обводки будут учитывать слои эстакад, номер слоя можно посмотреть в семантике - ключ layer.
+Если нужно принудительно положить линию поверх всех дорог:
+-x-mapnik-layer: top;
+(к примеру, использовалось для рисования разделительных полос на primary )
+
+Если (вдруг) понадобится принудительно положить линию под все дороги (фон):
+-x-mapnik-layer: bottom;
+
+/* fill-color: - html-цвет заливки */
+
+/*
+после селектора типа объекта можно опционально ограничить зумы:
+|zA-B, A < B
+если нам не нужна какая-то из границ ("от минимального зума до такого-то"
+либо "от такого-то до бесконечности") - число A или B можно опустить.
+*/
+
+
+
+
+
+/*
+свойства с префиксом background- в основном относятся к заливкам, без префиксов - к линиям.
+width - ширина линии
+color - цвет линии
+opacity - прозрачность (1 - видимый полностью, 0 - совсем невидимый)
+casing-width - ширина обводки
+casing-color - цвет обводки
+casing-opacity - прозрачность обводки
+  */
+
+/* на 19-м масштабе 1 м = 4,6 пикселя 
+   каждый последующий масштаб - в 2 раза меньше пикселей, 
+   чем напредыдущем */
+
+/* 220 кВ - 50 м (по 25 в обе стороны) */
+
+area|z15[power=station][voltage=220000], 
+area|z15[power=station][voltage=220] 
+{width: 14; color:red ; fill-position:background; fill-color:red; z-index:20}
+
+area|z16[power=station][voltage=220000],
+area|z16[power=station][voltage=220]
+{color:red; width:29;fill-position:background; fill-color:red; z-index:20}
+
+area|z17[power=station][voltage=220000],
+area|z17[power=station][voltage=220]
+{color:red; width:58;fill-position:background; fill-color:red; z-index:20}
+
+area|z18[power=station][voltage=220000],
+area|z18[power=station][voltage=220]
+{color:red; width:115;fill-position:background; fill-color:red; z-index:20}
+
+area|z19[power=station][voltage=220000],
+area|z19[power=station][voltage=220]
+{color:red; width:230;fill-position:background; fill-color:red; z-index:20}
+
+
+/* 110 кВ  - 40 м */
+
+
+area|z15[power=station][voltage=110000],
+area|z15[power=station][voltage=110]
+{color:red; width:12;fill-position:background; fill-color:red; z-index:20}
+
+area|z16[power=station][voltage=110000],
+area|z16[power=station][voltage=110]
+{color:red; width:24;fill-position:background; fill-color:red; z-index:20}
+
+area|z17[power=station][voltage=110000],
+area|z17[power=station][voltage=110]
+{color:red; width:46;fill-position:background; fill-color:red; z-index:20}
+
+area|z18[power=station][voltage=110000],
+area|z18[power=station][voltage=110]
+{color:red; width:92;fill-position:background; fill-color:red; z-index:20}
+
+area|z19[power=station][voltage=110000],
+area|z19[power=station][voltage=110]
+{color:red; width:184;fill-position:background; fill-color:red; z-index:20}
+
+/* 35 кВ - 30 м */
+area|z15[power=station][voltage=35000],
+area|z15[power=station][voltage=35]
+{color:red; width:8;fill-position:background; fill-color:red; z-index:20}
+
+area|z16[power=station][voltage=35000],
+area|z16[power=station][voltage=35]
+{color:red; width:17;fill-position:background; fill-color:red; z-index:20}
+
+area|z17[power=station][voltage=35000],
+area|z17[power=station][voltage=35]
+{color:red; width:34;fill-position:background; fill-color:red; z-index:20}
+
+area|z18[power=station][voltage=35000],
+area|z18[power=station][voltage=35]
+{color:red; width:69;fill-position:background; fill-color:red; z-index:20}
+
+area|z19[power=station][voltage=35000],
+area|z19[power=station][voltage=35]
+{color:red; width:138;fill-position:background; fill-color:red; z-index:20}
+
+/* 10 кВ - 20 м */
+area|z15[power=station][voltage=10000],
+area|z15[power=station][voltage=10]
+{color:red; width:6;fill-position:background; fill-color:red; z-index:20}
+
+area|z16[power=station][voltage=10000],
+area|z16[power=station][voltage=10]
+{color:red; width:12;fill-position:background; fill-color:red; z-index:20}
+
+area|z17[power=station][voltage=10000],
+area|z17[power=station][voltage=10]
+{color:red; width:23;fill-position:background; fill-color:red; z-index:20}
+
+area|z18[power=station][voltage=10000],
+area|z18[power=station][voltage=10]
+{color:red; width:46;fill-position:background; fill-color:red; z-index:20}
+
+area|z19[power=station][voltage=10000],
+area|z19[power=station][voltage=10]
+{color:red; width:92;fill-position:background; fill-color:red; z-index:20}
+
+/* 6 кВ - 20 м */
+area|z15[power=station][voltage=6000],
+area|z15[power=station][voltage=6]
+{color:red; width:6;fill-position:background; fill-color:red; z-index:20}
+
+area|z16[power=station][voltage=6000],
+area|z16[power=station][voltage=6]
+{color:red; width:12;fill-position:background; fill-color:red; z-index:20}
+
+area|z17[power=station][voltage=6000],
+area|z17[power=station][voltage=6]
+{color:red; width:23;fill-position:background; fill-color:red; z-index:20}
+
+area|z18[power=station][voltage=6000],
+area|z18[power=station][voltage=6]
+{color:red; width:46;fill-position:background; fill-color:red; z-index:20}
+
+area|z19[power=station][voltage=6000],
+area|z19[power=station][voltage=6]
+{color:red; width:92;fill-position:background; fill-color:red; z-index:20}
+
+
+/* 0,4 кВ - 4 м */
+area|z15[power=station][voltage=400],
+area|z15[power=station][voltage=0.4]
+{color:red; width:1;fill-position:background; fill-color:red; z-index:20}
+
+area|z16[power=station][voltage=400],
+area|z16[power=station][voltage=0.4]
+{color:red; width:2;fill-position:background; fill-color:red; z-index:20}
+
+area|z17[power=station][voltage=400],
+area|z17[power=station][voltage=0.4]
+{color:red; width:5;fill-position:background; fill-color:red; z-index:20}
+
+area|z18[power=station][voltage=400],
+area|z18[power=station][voltage=0.4]
+{color:red; width:9;fill-position:background; fill-color:red; z-index:20}
+
+area|z19[power=station][voltage=400],
+area|z19[power=station][voltage=0.4]
+{color:red; width:18;fill-position:background; fill-color:red; z-index:20}
+

@@ -1,2 +1,5 @@
-# osm_power_mapcss_styles
-Energy objects mapcss styles for mapnik render OSM
+Набор стилей для отрисовки ДРСК OSM карты.
+
+drsk_mapcss_styles - Стили для mapcss для отрисовки объектов энергетической инфраструктуры
+osm_mapcss_styles - Стили для mapcss для отрисовки объектов из базовой карты OSM (границы районов и т.п.)
+osm2pgsql_styles - Стиль миграции новых тегов из OSM-postgres базы в OSM-postgis базу

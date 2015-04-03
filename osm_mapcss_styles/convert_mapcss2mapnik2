@@ -1,0 +1,63 @@
+#!/bin/bash
+
+#python komap.py -s styles/mapink.mapcss -c komap.conf > osm.xml
+#python komap.py -s my.mapcss -c komap.conf > osm.xml
+
+#configs="drsk_line_0_4 \
+#drsk_line_10 \
+#drsk_line_220_110 \
+#drsk_line_35 \
+#drsk_line_6 \
+#drsk_line_error \
+#drsk_station \
+#drsk_tower \
+#drsk_tp"
+
+config_dir="/opt/osm/mapcss/osm_mapcss/"
+configs=`find ${config_dir} -type f -iname '*.mapcss' -printf "%f "|sed "s/\.mapcss//g"`
+tilecache_conf="/etc/tilecache.cfg"
+
+rm -f /opt/osm/mapnik/mapnik_configs_old/*
+cp -r /opt/osm/mapnik/mapnik_configs/* /opt/osm/mapnik/mapnik_configs_old/
+
+cd /opt/osm/mapcss/kothic_converter_src/kothic/src
+for config in $configs
+do
+#echo "python komap.py -s ${config_dir}/${config}.mapcss -c komap.conf > osm.xml"
+python komap.py -s ${config_dir}/${config}.mapcss -c /opt/osm/mapcss/osm_mapcss/komap.conf > osm.xml
+#echo "upgrade_map_xml.py osm.xml /opt/osm/mapnik/mapnik_configs/${config}.xml"
+upgrade_map_xml.py osm.xml /opt/osm/mapnik/mapnik_configs/${config}.xml
+echo "mkdir /var/tilecache/${config}"
+mkdir /var/tilecache/${config}
+chown apache:apache /var/tilecache/${config}
+
+# Формируем часть конфига для tilecache:
+echo "
+# Конфиг сгенерирован автоматически скриптом $0 на основе конфига mapcss ${config_dir}/${config}.mapcss
+[${config}]
+type=MapnikLayer
+mapfile=/opt/osm/mapnik/mapnik_configs/${config}.xml
+spherical_mercator=true
+tms_type=google
+metatile=yes
+
+" > /etc/tilecache.d/${config}.cfg 
+
+done
+
+# Пропуск правки конфига tilecache:
+#exit 0
+
+# Бэкапим старый конфиг tilecache:
+cp /etc/tilecache.cfg /etc/tilecache.cfg_bak
+
+# Собираем конфиг:
+echo "# Конфиг сгенерирован автоматически скриптом ./convert_mapcss2mapnik2" > ${tilecache_conf}
+cat /etc/tilecache.d/00base.ini /etc/tilecache.d/*.cfg >> ${tilecache_conf}
+
+# Перезапуск tilecache (вроде как не нужно, т.к. tilecache - это cgi, вызываемый apache-ем по требованию):
+#/etc/init.d/apache2 restart
+
+# Т.к. конфиги обновились, очищаем старые тайлы:
+/opt/osm/scripts/tilecache_delete_all_layers_cache
+

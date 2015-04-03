@@ -1,0 +1,137 @@
+meta {
+    title: "Osmosnimki mapcss stylesheet";   /* title shown in the menu */
+}
+
+
+
+
+/*
+  Deja Vu MapCSS styles
+  Osmosnimki maps style
+*/
+
+/* коментарии отделяются так и могут встречаться везде, где можно поставить пробел */
+
+
+
+canvas {opacity:0; -x-mapnik-true-layers: false}
+/*canvas {
+  fill-color: #F1EEE8;
+  -x-mapnik-dem-hack: true;
+}
+*/
+canvas {
+  background-color: #fcf8e4; /* for josm: ground color*/
+  default-points: false;
+  default-lines: false;
+}
+
+way::* {
+    linejoin: miter;
+    linecap: none;
+}
+
+area {
+    fill-opacity: 0.0001;
+}
+
+way:closed, relation[type=multipolygon] {
+    fill-opacity: 1.0;
+}
+
+*::* {
+    text-halo-color: white;
+    text-anchor-horizontal: center;
+    text-anchor-vertical: center;
+}
+
+
+
+/*
+селектор, что рисовать.
+
+canvas - фон, считается одним большим полигоном, намного больше карты.
+    К нему можно применять свойства заливок.
+    Для mapnik'a нельзя выбирать разные параметры фона для разных зумов, и не поддерживаются иные параметры, кроме цвета
+
+node - точка.
+way - путь. выбирает одновременно все границы полигонов и все линейные объекты
+line - линейные объекты (обычно - незамкнутые пути, обычно к ним неприменима заливка)
+area - площадные объекты (обычно - замкнутые пути, применимы как заливки, так и линии контуров)
+
+ */
+/*
+квадратные скобки после объекта - селектор по тегам.
+основные варианты:
+тег=значение
+тег!=значение - выбрать все, кроме тег=значение
+тег - тег присутствует, значение не важно
+
+  */
+       {fill-position:background; fill-color:#f3eceb; z-index:1}
+/*
+z-index - порядковый номер слоя, в котором будет лежать объект.
+чем меньше, тем ниже будет находиться объект (другие будут перекрывать), 
+относительно z-index можно расставлять приоритеты в отрисовке, то что рисуется раньше, 
+вытеснит, то что рисуется позже. 
+
+магия: на развязках обводки будут учитывать слои эстакад, номер слоя можно посмотреть в семантике - ключ layer.
+Если нужно принудительно положить линию поверх всех дорог:
+-x-mapnik-layer: top;
+(к примеру, использовалось для рисования разделительных полос на primary )
+
+Если (вдруг) понадобится принудительно положить линию под все дороги (фон):
+-x-mapnik-layer: bottom;
+
+/* fill-color: - html-цвет заливки */
+
+/*
+после селектора типа объекта можно опционально ограничить зумы:
+|zA-B, A < B
+если нам не нужна какая-то из границ ("от минимального зума до такого-то"
+либо "от такого-то до бесконечности") - число A или B можно опустить.
+*/
+
+
+
+
+
+/*
+свойства с префиксом background- в основном относятся к заливкам, без префиксов - к линиям.
+width - ширина линии
+color - цвет линии
+opacity - прозрачность (1 - видимый полностью, 0 - совсем невидимый)
+casing-width - ширина обводки
+casing-color - цвет обводки
+casing-opacity - прозрачность обводки
+  */
+
+/* Рабочие ЛЭП*/
+
+/* 500 кВ*/
+way|z2-[power=line][voltage=500000],
+way|z2-[power=line][voltage=500]
+{color:#a50f0a; width:5;z-index: 20; -x-mapnik-layer: top;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+/* 220 кВ*/
+way|z2-[power=line][voltage=220000],
+way|z2-[power=line][voltage=220]
+{color:#c8c800; width:4;z-index: 20; -x-mapnik-layer: top;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+/* Кабельные линии */
+
+/* 500 кВ*/
+way|z2-[power=cable][voltage=500000],
+way|z2-[power=cable][voltage=500]
+{color:#a50f0a; width:5;z-index: 20; -x-mapnik-layer: top;
+dashes: 12;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+/* 220 кВ*/
+way|z2-[power=cable][voltage=220000],
+way|z2-[power=cable][voltage=220]
+{color:#c8c800; width:4;z-index: 20; -x-mapnik-layer: top;
+dashes: 12;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
