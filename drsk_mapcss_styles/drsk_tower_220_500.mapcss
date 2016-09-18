@@ -117,15 +117,18 @@ casing-opacity - прозрачность обводки
 /*  ===========================  Опоры  ========================*/
 /* На масштабах 2-9 подписи НЕ рисуем */
 /* Рисуем маленькую иконку */
-node|z2-9[power=tower][voltage=10000][!disconnector]
+node|z2-9[power=tower][voltage=220000][!disconnector],
+node|z2-9[power=tower][voltage=500000][!disconnector]
 {icon-image:"power_tower.png"; z-index:15}
 
-node|z2-9[power=tower][voltage=10000][disconnector]
+node|z2-9[power=tower][voltage=220000][disconnector],
+node|z2-9[power=tower][voltage=500000][disconnector]
 {icon-image:"power_tower_disconnector.png"; z-index:20}
 
 /* На масштабах 10- подписи рисуем */
 /* Рисуем большую иконку */
-node|z10-[power=tower][voltage=10000][!disconnector]
+node|z10-[power=tower][voltage=220000][!disconnector],
+node|z10-[power=tower][voltage=500000][!disconnector]
 {icon-image:"power_tower_josm.png"; text-offset:20; text:ref; font-size:8;
 font-family: "DejaVu Sans Book"; text-color:#2D1A2D; text-halo-radius: 1;
 text-halo-color: #ffffff; text-allow-overlap: false; -x-mapnik-min-distance:0; text-placement:any;
@@ -134,9 +137,8 @@ text-halo-color: #ffffff; text-allow-overlap: false; -x-mapnik-min-distance:0; t
     text-anchor-vertical: center;
 max-width:30; z-index:15}
 
-/* На масштабах 10- подписи рисуем */
-/* Рисуем большую иконку */
-node|z10-[power=tower][voltage=10000][disconnector]
+node|z10-[power=tower][voltage=220000][disconnector],
+node|z10-[power=tower][voltage=500000][disconnector]
 {icon-image:"power_tower_josm_disconnector.png"; text-offset:20; text:ref; font-size:8;
 font-family: "DejaVu Sans Book"; text-color:#2D1A2D; text-halo-radius: 1;
 text-halo-color: #ffffff; text-allow-overlap: false; -x-mapnik-min-distance:0; text-placement:any;
@@ -145,17 +147,20 @@ text-halo-color: #ffffff; text-allow-overlap: false; -x-mapnik-min-distance:0; t
     text-anchor-vertical: center;
 max-width:30; z-index:20}
 
+
 /* ======= муфты ============*/
 
 /*   соединительные */
 /* На масштабах 2-9 подписи НЕ рисуем */
 /* Рисуем маленькую иконку */
-node|z2-9[power=link][link=connection][voltage=10000]
+node|z2-9[power=link][link=connection][voltage=220000][!disconnector],
+node|z2-9[power=link][link=connection][voltage=500000][!disconnector]
 {icon-image:"power_cable_connection.png"; z-index:15}
 
 /* На масштабах 10- подписи рисуем */
 /* Рисуем большую иконку */
-node|z10-[power=link][link=connection][voltage=10000]
+node|z10-[power=link][link=connection][voltage=220000],
+node|z10-[power=link][link=connection][voltage=500000]
 {icon-image:"power_cable_connection.png"; text-offset:20; text:ref; font-size:8;
 font-family: "DejaVu Sans Book"; text-color:#2D1A2D; text-halo-radius: 1;
 text-halo-color: #ffffff; text-allow-overlap: false; -x-mapnik-min-distance:0; text-placement:any;
@@ -167,12 +172,14 @@ max-width:30; z-index:15}
 /*   концевые  */
 /* На масштабах 2-9 подписи НЕ рисуем */
 /* Рисуем маленькую иконку */
-node|z2-9[power=link][link=end_connection][voltage=10000]
+node|z2-9[power=link][link=end_connection][voltage=220000][!disconnector],
+node|z2-9[power=link][link=end_connection][voltage=500000][!disconnector]
 {icon-image:"power_cable_end_connection.png"; z-index:15}
 
 /* На масштабах 10- подписи рисуем */
 /* Рисуем большую иконку */
-node|z10-[power=link][link=end_connection][voltage=10000]
+node|z10-[power=link][link=end_connection][voltage=220000][!disconnector],
+node|z10-[power=link][link=end_connection][voltage=500000][!disconnector]
 {icon-image:"power_cable_end_connection.png"; text-offset:20; text:ref; font-size:8;
 font-family: "DejaVu Sans Book"; text-color:#2D1A2D; text-halo-radius: 1;
 text-halo-color: #ffffff; text-allow-overlap: false; -x-mapnik-min-distance:0; text-placement:any;

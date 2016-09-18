@@ -113,5 +113,36 @@ way|z2-[power=construction][construction=cable],
 way|z2-[power=construction][construction=line] 
 {color:grey; width:2;z-index: 20; -x-mapnik-layer: top;
 text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040 ;
-dashes: 16;
+dashes: 10,10;
 }
+
+/*==========================   Станции ПС  ================================*/
+
+/* Подписи к станциям НЕ рисуем на масштабах 2-9 */
+
+/* z2-11 */
+area|z2-14[power=construction][construction=station]
+{icon-image:"power_station_constraction.png"; z-index: 16}
+
+/* z14- */
+area|z15-[power=construction][construction=station]
+{
+width: 1.5; color: black; fill-position:background; fill-color: #f888bd; z-index: 16; dashes: 7,7}
+
+/* z12- */
+/* Подписи к станциям рисуем начиная с 12-го масштаба: */
+area|z12-[power=construction][construction=station]
+{
+text: name;
+font-family: "DejaVu Sans Book";
+font-size:10;
+text-offset:40;
+text-placement: any;
+text-color:#303030;
+text-halo-radius: 1; text-halo-color: #ffffff;
+text-allow-overlap: false; -x-mapnik-min-distance: 0;
+text-spacing: 0; 
+max-width: 80;
+z-index: 17}
+
+

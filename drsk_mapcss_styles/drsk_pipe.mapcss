@@ -113,6 +113,11 @@ way|z2-[man_made=pipeline][type=gas]
 {color: yellow; width:4;z-index: 20; -x-mapnik-layer: top; casing-width:2; casing-color: #80732b;
 text: name; text-position: line; text-color: black; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
 
+/* z2- */
+area|z15-[man_made=pipeline][type=gas]
+{
+width: .5; color: yellow; fill-position:background; fill-color: #80732b; z-index: 20}
+
 /* Невтепровод */
 way|z2-[man_made=pipeline][type=oil]
 {color: black; width:4;z-index: 20; -x-mapnik-layer: top; casing-width:2; casing-color: #80732b;

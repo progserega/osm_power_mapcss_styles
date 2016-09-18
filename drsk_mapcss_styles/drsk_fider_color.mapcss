@@ -1,0 +1,331 @@
+meta {
+    title: "Osmosnimki mapcss stylesheet";   /* title shown in the menu */
+}
+
+
+
+
+/*
+  Deja Vu MapCSS styles
+  Osmosnimki maps style
+*/
+
+/* коментарии отделяются так и могут встречаться везде, где можно поставить пробел */
+
+
+
+canvas {opacity:0; -x-mapnik-true-layers: false}
+/*canvas {
+  fill-color: #F1EEE8;
+  -x-mapnik-dem-hack: true;
+}
+*/
+canvas {
+  background-color: #fcf8e4; /* for josm: ground color*/
+  default-points: false;
+  default-lines: false;
+}
+
+way::* {
+    linejoin: miter;
+    linecap: none;
+}
+
+area {
+    fill-opacity: 0.0001;
+}
+
+way:closed, relation[type=multipolygon] {
+    fill-opacity: 1.0;
+}
+
+*::* {
+    text-halo-color: white;
+    text-anchor-horizontal: center;
+    text-anchor-vertical: center;
+}
+
+
+
+/*
+селектор, что рисовать.
+
+canvas - фон, считается одним большим полигоном, намного больше карты.
+    К нему можно применять свойства заливок.
+    Для mapnik'a нельзя выбирать разные параметры фона для разных зумов, и не поддерживаются иные параметры, кроме цвета
+
+node - точка.
+way - путь. выбирает одновременно все границы полигонов и все линейные объекты
+line - линейные объекты (обычно - незамкнутые пути, обычно к ним неприменима заливка)
+area - площадные объекты (обычно - замкнутые пути, применимы как заливки, так и линии контуров)
+
+ */
+/*
+квадратные скобки после объекта - селектор по тегам.
+основные варианты:
+тег=значение
+тег!=значение - выбрать все, кроме тег=значение
+тег - тег присутствует, значение не важно
+
+  */
+       {fill-position:background; fill-color:#f3eceb; z-index:1}
+/*
+z-index - порядковый номер слоя, в котором будет лежать объект.
+чем меньше, тем ниже будет находиться объект (другие будут перекрывать), 
+относительно z-index можно расставлять приоритеты в отрисовке, то что рисуется раньше, 
+вытеснит, то что рисуется позже. 
+
+магия: на развязках обводки будут учитывать слои эстакад, номер слоя можно посмотреть в семантике - ключ layer.
+Если нужно принудительно положить линию поверх всех дорог:
+-x-mapnik-layer: top;
+(к примеру, использовалось для рисования разделительных полос на primary )
+
+Если (вдруг) понадобится принудительно положить линию под все дороги (фон):
+-x-mapnik-layer: bottom;
+
+/* fill-color: - html-цвет заливки */
+
+/*
+после селектора типа объекта можно опционально ограничить зумы:
+|zA-B, A < B
+если нам не нужна какая-то из границ ("от минимального зума до такого-то"
+либо "от такого-то до бесконечности") - число A или B можно опустить.
+*/
+
+
+
+
+
+/*
+свойства с префиксом background- в основном относятся к заливкам, без префиксов - к линиям.
+width - ширина линии
+color - цвет линии
+opacity - прозрачность (1 - видимый полностью, 0 - совсем невидимый)
+casing-width - ширина обводки
+casing-color - цвет обводки
+casing-opacity - прозрачность обводки
+  */
+
+/* Рабочие ЛЭП*/
+
+way|z2-[power=line][color=1]
+{color:#ff0000; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+/* Кабельные линии */
+
+way|z2-[power=cable][color=1]
+{color:#ff0000; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+dashes: 12;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+
+/* Рабочие ЛЭП*/
+
+way|z2-[power=line][color=2]
+{color:#ff00ff; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+/* Кабельные линии */
+
+way|z2-[power=cable][color=2]
+{color:#ff00ff; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+dashes: 12;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+
+/* Рабочие ЛЭП*/
+
+way|z2-[power=line][color=3]
+{color:#0000ff; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+/* Кабельные линии */
+
+way|z2-[power=cable][color=3]
+{color:#0000ff; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+dashes: 12;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+
+/* Рабочие ЛЭП*/
+
+way|z2-[power=line][color=4]
+{color:#00ffff; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+/* Кабельные линии */
+
+way|z2-[power=cable][color=4]
+{color:#00ffff; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+dashes: 12;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+
+/* Рабочие ЛЭП*/
+
+way|z2-[power=line][color=5]
+{color:#00ff00; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+/* Кабельные линии */
+
+way|z2-[power=cable][color=5]
+{color:#00ff00; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+dashes: 12;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+
+/* Рабочие ЛЭП*/
+
+way|z2-[power=line][color=6]
+{color:#ffff00; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+/* Кабельные линии */
+
+way|z2-[power=cable][color=6]
+{color:#ffff00; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+dashes: 12;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+
+/* Рабочие ЛЭП*/
+
+way|z2-[power=line][color=7]
+{color:#7f0000; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+/* Кабельные линии */
+
+way|z2-[power=cable][color=7]
+{color:#7f0000; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+dashes: 12;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+
+/* Рабочие ЛЭП*/
+
+way|z2-[power=line][color=8]
+{color:#7f007f; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+/* Кабельные линии */
+
+way|z2-[power=cable][color=8]
+{color:#7f007f; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+dashes: 12;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+
+/* Рабочие ЛЭП*/
+
+way|z2-[power=line][color=9]
+{color:#00007f; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+/* Кабельные линии */
+
+way|z2-[power=cable][color=9]
+{color:#00007f; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+dashes: 12;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+
+/* Рабочие ЛЭП*/
+
+way|z2-[power=line][color=10]
+{color:#007f7f; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+/* Кабельные линии */
+
+way|z2-[power=cable][color=10]
+{color:#007f7f; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+dashes: 12;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+
+/* Рабочие ЛЭП*/
+
+way|z2-[power=line][color=11]
+{color:#007f00; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+/* Кабельные линии */
+
+way|z2-[power=cable][color=11]
+{color:#007f00; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+dashes: 12;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+
+/* Рабочие ЛЭП*/
+
+way|z2-[power=line][color=12]
+{color:#827f00; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+/* Кабельные линии */
+
+way|z2-[power=cable][color=12]
+{color:#827f00; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+dashes: 12;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+
+/* Рабочие ЛЭП*/
+
+way|z2-[power=line][color=13]
+{color:#9aff9a; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+/* Кабельные линии */
+
+way|z2-[power=cable][color=13]
+{color:#9aff9a; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+dashes: 12;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+
+/* Рабочие ЛЭП*/
+
+way|z2-[power=line][color=14]
+{color:#99ff72; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+/* Кабельные линии */
+
+way|z2-[power=cable][color=14]
+{color:#99ff72; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+dashes: 12;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+
+/* Рабочие ЛЭП*/
+
+way|z2-[power=line][color=15]
+{color:#ff72fa; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+/* Кабельные линии */
+
+way|z2-[power=cable][color=15]
+{color:#ff72fa; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+dashes: 12;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+
+/* Рабочие ЛЭП*/
+
+way|z2-[power=line][color=16]
+{color:#3d9846; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+
+/* Кабельные линии */
+
+way|z2-[power=cable][color=16]
+{color:#3d9846; width:1.5;z-index: 20; -x-mapnik-layer: top;casing-width:1; casing-color:black;
+dashes: 12;
+text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
+

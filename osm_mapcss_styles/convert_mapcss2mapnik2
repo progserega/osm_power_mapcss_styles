@@ -1,42 +1,36 @@
 #!/bin/bash
 
-#python komap.py -s styles/mapink.mapcss -c komap.conf > osm.xml
-#python komap.py -s my.mapcss -c komap.conf > osm.xml
-
-#configs="drsk_line_0_4 \
-#drsk_line_10 \
-#drsk_line_220_110 \
-#drsk_line_35 \
-#drsk_line_6 \
-#drsk_line_error \
-#drsk_station \
-#drsk_tower \
-#drsk_tp"
-
-config_dir="/opt/osm/mapcss/osm_mapcss/"
-configs=`find ${config_dir} -type f -iname '*.mapcss' -printf "%f "|sed "s/\.mapcss//g"`
+config_dir="/opt/osm/drsk_osm_map_styles/osm_mapcss_styles/"
+komap_conf="/opt/osm/drsk_osm_map_styles/osm_mapcss_styles/komap.conf"
 tilecache_conf="/etc/tilecache.cfg"
+mapnik_configs_dir="/etc/mapnik/tilecache_configs"
+mapnik_configs_dir_bak="/etc/mapnik/tilecache_configs.bak"
+kothic_path="/opt/osm/kothic/src/"
 
-rm -f /opt/osm/mapnik/mapnik_configs_old/*
-cp -r /opt/osm/mapnik/mapnik_configs/* /opt/osm/mapnik/mapnik_configs_old/
+configs=`find ${config_dir} -type f -iname '*.mapcss' -printf "%f "|sed "s/\.mapcss//g"`
+rm -f ${mapnik_configs_dir_bak}/*
+cp -r ${mapnik_configs_dir}/* ${mapnik_configs_dir_bak}/
 
-cd /opt/osm/mapcss/kothic_converter_src/kothic/src
+mkdir /etc/tilecache.d ${mapnik_configs_dir} ${mapnik_configs_dir_bak}
+chown www-data:www-data /etc/tilecache.d
+
+cd ${kothic_path}
 for config in $configs
 do
-#echo "python komap.py -s ${config_dir}/${config}.mapcss -c komap.conf > osm.xml"
-python komap.py -s ${config_dir}/${config}.mapcss -c /opt/osm/mapcss/osm_mapcss/komap.conf > osm.xml
-#echo "upgrade_map_xml.py osm.xml /opt/osm/mapnik/mapnik_configs/${config}.xml"
-upgrade_map_xml.py osm.xml /opt/osm/mapnik/mapnik_configs/${config}.xml
+echo "python komap.py -s ${config_dir}/${config}.mapcss -c komap.conf > osm.xml"
+python komap.py -s ${config_dir}/${config}.mapcss -c ${komap_conf} > osm.xml
+echo "upgrade-map-xml osm.xml ${mapnik_configs_dir}/${config}.xml"
+upgrade-map-xml osm.xml ${mapnik_configs_dir}/${config}.xml
 echo "mkdir /var/tilecache/${config}"
-mkdir /var/tilecache/${config}
-chown apache:apache /var/tilecache/${config}
+mkdir -p /var/tilecache/${config}
+chown www-data:www-data /var/tilecache/${config}
 
 # Формируем часть конфига для tilecache:
 echo "
 # Конфиг сгенерирован автоматически скриптом $0 на основе конфига mapcss ${config_dir}/${config}.mapcss
 [${config}]
 type=MapnikLayer
-mapfile=/opt/osm/mapnik/mapnik_configs/${config}.xml
+mapfile=${mapnik_configs_dir}/${config}.xml
 spherical_mercator=true
 tms_type=google
 metatile=yes
@@ -51,6 +45,11 @@ done
 # Бэкапим старый конфиг tilecache:
 cp /etc/tilecache.cfg /etc/tilecache.cfg_bak
 
+if [ ! -f /etc/tilecache.d/00base.ini ]
+then
+	cp ${config_dir}/00base.ini /etc/tilecache.d/
+fi
+
 # Собираем конфиг:
 echo "# Конфиг сгенерирован автоматически скриптом ./convert_mapcss2mapnik2" > ${tilecache_conf}
 cat /etc/tilecache.d/00base.ini /etc/tilecache.d/*.cfg >> ${tilecache_conf}
@@ -59,5 +58,6 @@ cat /etc/tilecache.d/00base.ini /etc/tilecache.d/*.cfg >> ${tilecache_conf}
 #/etc/init.d/apache2 restart
 
 # Т.к. конфиги обновились, очищаем старые тайлы:
-/opt/osm/scripts/tilecache_delete_all_layers_cache
+/opt/osm/scripts/tilecache_delete_all_layers_cache.sh
 
+exit 0

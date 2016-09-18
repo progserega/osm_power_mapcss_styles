@@ -11,3 +11,5 @@ area|z2-12[boundary=administrative][admin_level=6][name="${name}"]
 {width: .5; color: #D8D6D7; fill-position:background; fill-color: #${color};
 z-index:17}" >> "${mapcss_name}"
 done
+
+exit 0

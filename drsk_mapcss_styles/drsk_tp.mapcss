@@ -26,11 +26,12 @@ canvas {
   default-lines: false;
 }
 
+/* go
 way::* {
     linejoin: miter;
     linecap: none;
 }
-
+*/
 area {
     fill-opacity: 0.0001;
 }
@@ -39,12 +40,13 @@ way:closed, relation[type=multipolygon] {
     fill-opacity: 1.0;
 }
 
+/* go
 *::* {
     text-halo-color: white;
     text-anchor-horizontal: center;
     text-anchor-vertical: center;
 }
-
+*/
 
 
 /*
@@ -114,18 +116,32 @@ casing-color - цвет обводки
 casing-opacity - прозрачность обводки
   */
 
-/* ТП и КТП */
-/* На масштабах 2-9 подписи НЕ рисуем */
-node|z2-9[power=sub_station]
-{icon-image:"power.png"; z-index:15}
+/* ТП и КТП ДРСК */
+/* На масштабах 2-11 подписи НЕ рисуем */
+node|z2-[power=sub_station][operator=~/.*ДРСК.*/]
+{icon-image:"power.png"; -x-mapnik-layer:top; z-index:15}
 
-/* На масштабах 10- подписи рисуем */
+/**************** Абоненские ТП ***************/
+/* На масштабах 2-11 подписи НЕ рисуем */
+node|z2-[power=sub_station]
+{icon-image:"power_tp_abon.png"; z-index:15}
 
-node|z10-[power=sub_station]
-{icon-image:"power.png"; text-offset:20; text:ref; font-size:8;
-font-family: "DejaVu Sans Book"; text-color:#2D1A2D; text-halo-radius: 1;
-text-halo-color: #ffffff; text-allow-overlap: false; -x-mapnik-min-distance:0; text-placement:any;
-    text-halo-color: white;
-    text-anchor-horizontal: center;
-    text-anchor-vertical: center;
-max-width:30; z-index:15}
+
+
+/* На масштабах 12- подписи рисуем */
+node|z12-[power=sub_station]
+{
+-x-mapnik-layer:top;
+text:ref;
+font-family: "DejaVu Sans Book";
+font-size:10;
+text-offset:20;
+text-placement: any;
+text-color:#2D1A2D;
+text-halo-radius: 1; text-halo-color: #ffffff;
+text-allow-overlap: true; -x-mapnik-min-distance: 0;
+text-anchor-horizontal: center;
+text-anchor-vertical: center;
+text-spacing: 0;
+max-width: 90;
+z-index: 17}

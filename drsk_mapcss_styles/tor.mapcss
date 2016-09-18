@@ -101,7 +101,11 @@ max-width:30}
 */
 
 
-
+/*
+text-halo-radius - ширина обводки текста (более читаемый получается)
+text-halo-color - по идее цвет обводки
+max-width - максимальная ширина текста (если не поместится, то слова будут переноситься)
+*/
 
 
 /*
@@ -112,72 +116,17 @@ opacity - прозрачность (1 - видимый полностью, 0 - �
 casing-width - ширина обводки
 casing-color - цвет обводки
 casing-opacity - прозрачность обводки
+dashes: 16; - прерывистая
   */
 
-/*  ===========================  Опоры  ========================*/
-/* На масштабах 2-9 подписи НЕ рисуем */
-/* Рисуем маленькую иконку */
-node|z2-9[power=tower][voltage=10000][!disconnector]
-{icon-image:"power_tower.png"; z-index:15}
+/* Заполнение краской */
+/*===========================================================*/
 
-node|z2-9[power=tower][voltage=10000][disconnector]
-{icon-image:"power_tower_disconnector.png"; z-index:20}
+area|z2-[landuse=tor]
+{width: .5; color: #D8D6D7; fill-position:background; fill-color: #00c72f;
+casing-width: 3; casing-color: black;
+z-index:17}
 
-/* На масштабах 10- подписи рисуем */
-/* Рисуем большую иконку */
-node|z10-[power=tower][voltage=10000][!disconnector]
-{icon-image:"power_tower_josm.png"; text-offset:20; text:ref; font-size:8;
-font-family: "DejaVu Sans Book"; text-color:#2D1A2D; text-halo-radius: 1;
-text-halo-color: #ffffff; text-allow-overlap: false; -x-mapnik-min-distance:0; text-placement:any;
-    text-halo-color: white;
-    text-anchor-horizontal: center;
-    text-anchor-vertical: center;
-max-width:30; z-index:15}
-
-/* На масштабах 10- подписи рисуем */
-/* Рисуем большую иконку */
-node|z10-[power=tower][voltage=10000][disconnector]
-{icon-image:"power_tower_josm_disconnector.png"; text-offset:20; text:ref; font-size:8;
-font-family: "DejaVu Sans Book"; text-color:#2D1A2D; text-halo-radius: 1;
-text-halo-color: #ffffff; text-allow-overlap: false; -x-mapnik-min-distance:0; text-placement:any;
-    text-halo-color: white;
-    text-anchor-horizontal: center;
-    text-anchor-vertical: center;
-max-width:30; z-index:20}
-
-/* ======= муфты ============*/
-
-/*   соединительные */
-/* На масштабах 2-9 подписи НЕ рисуем */
-/* Рисуем маленькую иконку */
-node|z2-9[power=link][link=connection][voltage=10000]
-{icon-image:"power_cable_connection.png"; z-index:15}
-
-/* На масштабах 10- подписи рисуем */
-/* Рисуем большую иконку */
-node|z10-[power=link][link=connection][voltage=10000]
-{icon-image:"power_cable_connection.png"; text-offset:20; text:ref; font-size:8;
-font-family: "DejaVu Sans Book"; text-color:#2D1A2D; text-halo-radius: 1;
-text-halo-color: #ffffff; text-allow-overlap: false; -x-mapnik-min-distance:0; text-placement:any;
-    text-halo-color: white;
-    text-anchor-horizontal: center;
-    text-anchor-vertical: center;
-max-width:30; z-index:15}
-
-/*   концевые  */
-/* На масштабах 2-9 подписи НЕ рисуем */
-/* Рисуем маленькую иконку */
-node|z2-9[power=link][link=end_connection][voltage=10000]
-{icon-image:"power_cable_end_connection.png"; z-index:15}
-
-/* На масштабах 10- подписи рисуем */
-/* Рисуем большую иконку */
-node|z10-[power=link][link=end_connection][voltage=10000]
-{icon-image:"power_cable_end_connection.png"; text-offset:20; text:ref; font-size:8;
-font-family: "DejaVu Sans Book"; text-color:#2D1A2D; text-halo-radius: 1;
-text-halo-color: #ffffff; text-allow-overlap: false; -x-mapnik-min-distance:0; text-placement:any;
-    text-halo-color: white;
-    text-anchor-horizontal: center;
-    text-anchor-vertical: center;
-max-width:30; z-index:15}
-
+area|z2-[landuse=tor]
+{text:name; text-offset:15; font-size:12; font-family: "DejaVu Sans ExtraLight"; text-halo-radius:3; text-color:blue;
+text-halo-color:#ffffff;-x-mapnik-min-distance:0; z-index:15}

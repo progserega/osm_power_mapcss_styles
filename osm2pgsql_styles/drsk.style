@@ -80,12 +80,15 @@ node,way   power_source text         linear
 node,way   place        text         polygon
 node,way   railway      text         linear
 node,way   ref          text         linear
+node,way   color        text         linear
+node,way   groz_front 	text  		 polygon 
 node,way   power_usage_percent text  polygon
 node,way   power_usage_mva     text  polygon
 node,way   power_usage_mvt     text  polygon
 node,way   power_usage_date    text  polygon
 node,way   power_usage_comment     text  polygon
 node,way   communication       text  polygon
+node       disconnector text         linear
 node,way   type	        text  		 polygon
 node,way   bandwidth	text  		 polygon
 node,way   link       	text  		 polygon

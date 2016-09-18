@@ -111,7 +111,7 @@ casing-opacity - прозрачность обводки
 /* 0.4 кВ*/
 way|z2-[power=minor_line][voltage=400],
 way|z2-[power=minor_line][voltage=0.4]
-{color:#808080; width:1;z-index: 20; -x-mapnik-layer: top;
+{color:#00ff00; width:1;z-index: 20; -x-mapnik-layer: top;
 text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
 
 /* Кабельные линии */
@@ -119,6 +119,6 @@ text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans B
 /* 0.4 кВ*/
 way|z2-[power=cable][voltage=400],
 way|z2-[power=cable][voltage=0.4]
-{color:#808080; width:1;z-index: 20; -x-mapnik-layer: top;
+{color:#00ff00; width:1;z-index: 20; -x-mapnik-layer: top;
 dashes: 12;
 text: name; text-position: line; text-color: #ffffff; font-family: DejaVu Sans Book; font-size:11; text-halo-radius: 1; text-halo-color: #404040}
